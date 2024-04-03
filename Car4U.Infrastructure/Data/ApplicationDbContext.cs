@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Car4U.Data
+namespace Car4U.Data.Infrastructure
 {
     public class ApplicationDbContext : IdentityDbContext
     {
