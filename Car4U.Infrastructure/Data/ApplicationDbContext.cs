@@ -1,4 +1,5 @@
 ﻿using Car4U.Infrastructure.Data.Models;
+using Car4U.Infrastructure.Data.SeedDb;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,12 @@ namespace Car4U.Data.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new OwnerConfiguration());
+            builder.ApplyConfiguration(new FuelTypeConfiguration());
+            builder.ApplyConfiguration(new ModelConfiguration());
+            builder.ApplyConfiguration(new VehicleConfiguration());
+
             base.OnModelCreating(builder);
         }
 
