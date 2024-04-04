@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -34,6 +35,10 @@ namespace Car4U.Infrastructure.Data.Models
         [Required]
         [Comment("User Identifier")]
         public string UserId { get; set; } = string.Empty;
+
+        [ForeignKey(nameof(UserId))]
+
+        public IdentityUser User { get; set; } = null!;
 
         public IEnumerable<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
     }
