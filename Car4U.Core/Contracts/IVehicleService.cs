@@ -3,19 +3,19 @@ using Car4U.Core.Models.Car;
 
 namespace Car4U.Core.Contracts
 {
-    public interface ICarService
+    public interface IVehicleService
     {
-        Task<CarQueryServiceModel> AllAsync(
-            string? FuelType = null,
-            string? Model = null,
-            string? SearchTerm = null,
-            CarsSorting sorting = CarsSorting.Available,
+        Task<VehicleQueryServiceModel> AllAsync(
+            string? fuelType = null,
+            string? model = null,
+            string? searchTerm = null,
+            VehiclesSorting sorting = VehiclesSorting.Available,
             int currentPage = 1,
-            int carsPerPage = 1);
+            int vehiclesPerPage = 1);
 
-        Task<IEnumerable<CarModelServiceModel>> AllModelsAsync();
+        Task<IEnumerable<VehicleModelServiceModel>> AllModelsAsync();
 
-        Task<IEnumerable<CarFuelTypeServiceModel>> AllFuelTypesAsync();
+        Task<IEnumerable<VehicleFuelTypeServiceModel>> AllFuelTypesAsync();
 
         Task<IEnumerable<string>> AllModelNamesAsync();
         Task<IEnumerable<string>> AllFuelTypeNamesAsync();

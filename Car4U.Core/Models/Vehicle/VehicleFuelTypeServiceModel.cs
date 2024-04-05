@@ -1,6 +1,6 @@
 ﻿namespace Car4U.Core.Models.Car
 {
-    public class CarFuelTypeServiceModel
+    public class VehicleFuelTypeServiceModel
     {
         public int Id { get; set; }
 

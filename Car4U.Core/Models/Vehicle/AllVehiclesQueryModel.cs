@@ -9,18 +9,20 @@ namespace Car4U.Core.Models.Car
 
         public string FuelType { get; set; } = null!;
 
+        public string Model { get; set; } = null!;
+
         public string SearchTerm { get; set; } = null!;
 
-        public VehiclesSorting CarsSorting { get; init; }
+        public VehiclesSorting VehiclesSorting { get; init; }
 
         public int CurrentPage { get; init; } = 1;
 
-        public int TotalCarsCount { get; set; }
+        public int TotalVehiclesCount { get; set; }
 
-        public IEnumerable<FuelType> FuelTypes { get; set; } = null!;
+        public IEnumerable<string> FuelTypes { get; set; } = null!;
 
-        public IEnumerable<Model> Models { get; set; } = null!;
+        public IEnumerable<string> Models { get; set; } = null!;
 
-        public IEnumerable<VehicleQueryServiceModel> Cars { get; set; } = new List<VehicleQueryServiceModel>();
+        public IEnumerable<VehicleServiceModel> Vehicles { get; set; } = new List<VehicleServiceModel>();
     }
 }

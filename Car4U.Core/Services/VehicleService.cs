@@ -1,5 +1,6 @@
 ﻿using Car4U.Core.Contracts;
 using Car4U.Core.Enumerations;
+using Car4U.Core.Extensions;
 using Car4U.Core.Models.Car;
 using Car4U.Infrastructure.Data.Common;
 using Car4U.Infrastructure.Data.Models;
@@ -16,7 +17,7 @@ namespace Car4U.Core.Services
             _repository = repository;
         }
 
-        public Task<VehicleQueryServiceModel> AllAsync(string? fuelType = null, string? model = null, string? searchTerm = null, VehiclesSorting sorting = VehiclesSorting.Available, int currentPage = 1, int carsPerPage = 1)
+        public async Task<VehicleQueryServiceModel> AllAsync(string? fuelType = null, string? model = null, string? searchTerm = null, VehiclesSorting sorting = VehiclesSorting.Available, int currentPage = 1, int vehiclesPerPage = 1)
         {
             var vehiclesToShow = _repository
                 .AllReadOnly<Vehicle>()
@@ -42,9 +43,35 @@ namespace Car4U.Core.Services
 
             vehiclesToShow = sorting switch
             {
-                VehiclesSorting.HighestPrice =>
+                VehiclesSorting.HighestPrice => 
+                vehiclesToShow.OrderByDescending(v=> v.Price),
+
+                VehiclesSorting.LowestPrice => 
+                vehiclesToShow.OrderBy(v=> v.Price),
+
+                VehiclesSorting.OwnerRating => 
+                vehiclesToShow.OrderByDescending(v=> v.Owner.Rating),
+
+                VehiclesSorting.Available => 
+                vehiclesToShow.OrderBy(v=> v.RenterId != null)
+                .ThenBy(v=> v.Id),
+
+                _=> vehiclesToShow.OrderBy(v=> v.Id)
             };
 
+            var vehicles = await vehiclesToShow
+                .Skip((currentPage - 1) * vehiclesPerPage)
+                .Take(vehiclesPerPage)
+                .ProjectToVehicleServiceModel()
+                .ToListAsync();
+
+            var totalVehicles = await vehiclesToShow.CountAsync();
+
+            return new VehicleQueryServiceModel()
+            {
+                Vehicles = vehicles,
+                TotalVehiclesCount = totalVehicles
+            };
 
         }
 
