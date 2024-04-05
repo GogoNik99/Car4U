@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Car4U.Infrastructure.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(Car4UDbContext))]
     [Migration("20240404104435_IdentityUserAddedToOwner")]
     partial class IdentityUserAddedToOwner
     {
