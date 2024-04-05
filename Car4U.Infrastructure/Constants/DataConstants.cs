@@ -18,6 +18,14 @@
 
         public const int VehicleDescriptionMinLenght = 150;
 
+        public const string VehicleMaxPrice = "1000";
+
+        public const string VehicleMinPrice = "100";
+
+        public const string OwnerMaxRating = "10";
+
+        public const string OwnerMinRating = "0.01";
+
         public const int OwnerPhoneNumberMaxLenght = 16;
 
         public const int OwnerPhoneMinLength = 7;
