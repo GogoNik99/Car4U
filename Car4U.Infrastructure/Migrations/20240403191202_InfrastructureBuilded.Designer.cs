@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Car4U.Infrastructure.Migrations
 {
-    [DbContext(typeof(Car4UDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240403191202_InfrastructureBuilded")]
     partial class InfrastructureBuilded
     {
