@@ -18,6 +18,14 @@
 
         public const int VehicleDescriptionMinLenght = 150;
 
+        public const string VehicleMaxPrice = "1000";
+
+        public const string VehicleMinPrice = "100";
+
+        public const string OwnerMaxRating = "10";
+
+        public const string OwnerMinRating = "0.01";
+
         public const int OwnerPhoneNumberMaxLenght = 16;
 
         public const int OwnerPhoneMinLength = 7;
@@ -31,6 +39,8 @@
         public const int OwnerRatingMinLenght = 10;
 
         public const int VehicleImgNameMaxLenght = 50;
+
+        public const string ImagePath = @"D:\programing\Car4U\Car4U\wwwroot\img";
 
     }
 }
