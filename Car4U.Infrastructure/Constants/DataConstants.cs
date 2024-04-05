@@ -32,5 +32,7 @@
 
         public const int VehicleImgNameMaxLenght = 50;
 
+        public const string ImagePath = @"D:\programing\Car4U\Car4U\wwwroot\img";
+
     }
 }
