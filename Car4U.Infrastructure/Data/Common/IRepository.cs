@@ -10,6 +10,8 @@
 
         Task DeleteAsync<T>(object id) where T : class;
 
-        Task<T> GetByIdAsync<T>(object id) where T : class;
+        Task<T?> GetByIdAsync<T>(object id) where T : class;
+
+        Task<int> SaveChangesAsync();
     }
 }

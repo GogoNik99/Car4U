@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Car4U.Data.Infrastructure
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class Car4UDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public Car4UDbContext(DbContextOptions<Car4UDbContext> options)
             : base(options)
         {
         }
