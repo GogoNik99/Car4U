@@ -1,5 +1,5 @@
 ﻿using Car4U.Core.Enumerations;
-using Car4U.Core.Models.Car;
+using Car4U.Core.Models.Vehicle;
 
 namespace Car4U.Core.Contracts
 {

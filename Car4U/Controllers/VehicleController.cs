@@ -1,5 +1,5 @@
 ﻿using Car4U.Core.Contracts;
-using Car4U.Core.Models.Car;
+using Car4U.Core.Models.Vehicle;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ namespace Car4U.Controllers
         public VehicleController(
             IVehicleService vehicleService,
             IImageService imageService,
-            ILogger logger)
+            ILogger<VehicleController> logger)
         {
             _vehicleService = vehicleService;
             _imageService = imageService;
@@ -25,27 +25,27 @@ namespace Car4U.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> All([FromQuery] AllVehiclesQueryModel model)
+        public async Task<IActionResult> All([FromQuery] AllVehiclesQueryModel input)
         {
             var vehicles = await _vehicleService.AllAsync
                 (
-                    model.FuelType,
-                    model.Model,
-                    model.SearchTerm,
-                    model.VehiclesSorting,
-                    model.CurrentPage,
-                    model.VehiclesPerPage
+                    input.FuelType,
+                    input.Model,
+                    input.SearchTerm,
+                    input.VehiclesSorting,
+                    input.CurrentPage,
+                    input.VehiclesPerPage
                 );
 
-            model.TotalVehiclesCount = vehicles.TotalVehiclesCount;
+            input.TotalVehiclesCount = vehicles.TotalVehiclesCount;
 
-            model.Vehicles = vehicles.Vehicles;
+            input.Vehicles = vehicles.Vehicles;
 
-            model.FuelTypes = await _vehicleService.AllFuelTypeNamesAsync();
+            input.FuelTypes = await _vehicleService.AllFuelTypeNamesAsync();
 
-            model.FuelTypes = await _vehicleService.AllModelNamesAsync();
+            input.Models = await _vehicleService.AllModelNamesAsync();
 
-            return View(model);
+            return View(input);
         }
     }
 }

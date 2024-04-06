@@ -1,0 +1,109 @@
+﻿@model AllVehiclesQueryModel 
+
+@{ 
+    ViewBag.Title = "All Vehicles"; 
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<form method="get"> 
+    <div class="row"> 
+        <div class="form-group col-md-3 d-flex justify-content-between"> 
+        <div class="form-group"> 
+            <label asp-for="FuelType"></label>
+                <select asp-for="FuelType" class="form-control">
+                    <option value="">All</option> 
+                    @foreach (var category in Model.FuelTypes)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group">
+                <label asp-for="Model"></label>
+                <select asp-for="Model" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var category in Model.Models)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+        <div class="form-group col-md-3"> 
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="..."> 
+        </div>
+
+    <div class="form-group col-md-3"> 
+        <div class="form-group"> 
+            <label asp-for="VehiclesSorting"></label> 
+            <select asp-for="VehiclesSorting" class="form-control">
+                <option value="0">Highest Price First</option>
+                <option value="1">Lowest price first</option>
+                <option value="2">By Rating</option>
+                <option value="3">By Availability</option>
+            </select> 
+        </div> 
+    </div>
+    
+    <div class="col-md-3"> 
+        <div class="form-group mt-4 p-2"> 
+            <input type="submit" value="Search" class="btn btn-primary" /> 
+            </div> 
+        </div> 
+     </div>
+</form>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1) 
+    { 
+        previousPage = 1; 
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalVehiclesCount / Model.VehiclesPerPage);
+
+} <div class="row mb-5"> 
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start"> 
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+        asp-controller="Vehicle"
+        asp-action="All"
+        asp-route-currentPage="@previousPage"
+        asp-route-fuelType="@Model.FuelType"
+        asp-route-model="@Model.Model"
+        asp-route-searchTerm="@Model.SearchTerm"
+        asp-route-sorting="@((int)Model.VehiclesSorting)"><<</a> 
+    </div>
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage || !Model.Vehicles.Any();
+    }
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end"> 
+        <a class="btn btn-primary @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+        asp-controller="Vehicle"
+        asp-action="All"
+        asp-route-currentPage="@(Model.CurrentPage + 1)"
+        asp-route-fuelType="@Model.FuelType"
+        asp-route-model="@Model.Model"
+        asp-route-searchTerm="@Model.SearchTerm"
+        asp-route-sorting="@((int)Model.VehiclesSorting)">>></a> 
+    </div>
+</div>
+
+
+@if (!Model.Vehicles.Any())
+{
+     <h2 class="text-center">No Vehicles found!</h2>
+}
+
+<div class="row"> 
+    @foreach (var vehicle in Model.Vehicles)
+    {
+        <partial name="_VehiclePartial" model="@vehicle" />
+    } </div>

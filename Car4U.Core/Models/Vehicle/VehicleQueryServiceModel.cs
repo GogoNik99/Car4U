@@ -1,4 +1,4 @@
-﻿namespace Car4U.Core.Models.Car
+﻿namespace Car4U.Core.Models.Vehicle
 {
     public class VehicleQueryServiceModel
     {

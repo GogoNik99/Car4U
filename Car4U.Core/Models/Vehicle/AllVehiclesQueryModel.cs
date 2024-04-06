@@ -1,7 +1,6 @@
 ﻿using Car4U.Core.Enumerations;
-using Car4U.Infrastructure.Data.Models;
 
-namespace Car4U.Core.Models.Car
+namespace Car4U.Core.Models.Vehicle
 {
     public class AllVehiclesQueryModel
     {
@@ -13,7 +12,7 @@ namespace Car4U.Core.Models.Car
 
         public string SearchTerm { get; set; } = null!;
 
-        public VehiclesSorting VehiclesSorting { get; init; }
+        public VehiclesSorting VehiclesSorting { get; set; }
 
         public int CurrentPage { get; init; } = 1;
 

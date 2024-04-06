@@ -1,7 +1,7 @@
 ﻿using Car4U.Core.Contracts;
 using Car4U.Core.Enumerations;
 using Car4U.Core.Extensions;
-using Car4U.Core.Models.Car;
+using Car4U.Core.Models.Vehicle;
 using Car4U.Infrastructure.Data.Common;
 using Car4U.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +30,7 @@ namespace Car4U.Core.Services
 
             if (fuelType != null)
             {
-                vehiclesToShow = vehiclesToShow.Where(v => v.FuelType.Name == model);
+                vehiclesToShow = vehiclesToShow.Where(v => v.FuelType.Name == fuelType);
             }
 
             if (searchTerm != null)
@@ -38,25 +38,26 @@ namespace Car4U.Core.Services
                 string normalizedSearchTerm = searchTerm.ToLower();
                 vehiclesToShow = vehiclesToShow
                     .Where(v => v.Manufacturer.ToLower().Contains(normalizedSearchTerm) ||
-                           v.Description.ToLower().Contains(normalizedSearchTerm));
+                           v.Description.ToLower().Contains(normalizedSearchTerm) ||
+                           v.Model.Name.ToLower().Contains(normalizedSearchTerm));
             }
 
             vehiclesToShow = sorting switch
             {
-                VehiclesSorting.HighestPrice => 
-                vehiclesToShow.OrderByDescending(v=> v.Price),
+                VehiclesSorting.HighestPrice =>
+                vehiclesToShow.OrderByDescending(v => v.Price),
 
-                VehiclesSorting.LowestPrice => 
-                vehiclesToShow.OrderBy(v=> v.Price),
+                VehiclesSorting.LowestPrice =>
+                vehiclesToShow.OrderBy(v => v.Price),
 
-                VehiclesSorting.OwnerRating => 
-                vehiclesToShow.OrderByDescending(v=> v.Owner.Rating),
+                VehiclesSorting.OwnerRating =>
+                vehiclesToShow.OrderByDescending(v => v.Owner.Rating),
 
-                VehiclesSorting.Available => 
-                vehiclesToShow.OrderBy(v=> v.RenterId != null)
-                .ThenBy(v=> v.Id),
+                VehiclesSorting.Available =>
+                vehiclesToShow.OrderBy(v => v.RenterId != null)
+                .ThenBy(v => v.Id),
 
-                _=> vehiclesToShow.OrderBy(v=> v.Id)
+                _ => vehiclesToShow.OrderBy(v => v.Id)
             };
 
             var vehicles = await vehiclesToShow

@@ -1,0 +1,39 @@
+﻿@model VehicleServiceModel
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <img height="200" width="100" class="card-img-top" src="~/img/@Model.ImageFileName" alt="Card image cap">
+        <div class="card-body text-center">
+            <h4>@Model.Name</h4>
+            <h6>Manifacturer: <b>@Model.Manifacturer</b></h6>
+            <h6>Price Per Day: 
+                <b>@String.Format("{0:f2}", Model.Price) BGN</b>
+            </h6>
+            <h6>Rating : <b>@Model.Rating</b></h6>
+            <a asp-controller="House" asp-action="Details" asp-route-id="@Model.Id"
+               class="btn btn-success">Details</a>
+            @if (this.User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="Vehicle" asp-action="Edit" asp-route-id="@Model.Id"
+                   class="btn btn-warning">Edit</a>
+
+                <a asp-controller="Vehicle" asp-action="Delete" asp-route-id="@Model.Id"
+                   class="btn btn-danger">Delete</a>
+
+                <p></p>
+                @if (!Model.IsRented)
+                {
+                    <form class="input-group-sm" asp-controller="Vehicle" asp-action="Rent"
+                        asp-route-id="@Model.Id" method="post"> <input class="btn btn-primary" type="submit" value="Rent" /> 
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="Vehicle" asp-action="Return" asp-route-id="@Model.Id" method="post"> 
+                        <input class="btn btn-primary" type="submit" value="Leave" /> 
+                    </form>
+                }
+            }
+        </div>
+    </div>
+</div>

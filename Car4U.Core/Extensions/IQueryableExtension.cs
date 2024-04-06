@@ -1,4 +1,4 @@
-﻿using Car4U.Core.Models.Car;
+﻿using Car4U.Core.Models.Vehicle;
 using Car4U.Infrastructure.Data.Models;
 
 namespace Car4U.Core.Extensions
@@ -17,7 +17,8 @@ namespace Car4U.Core.Extensions
                     IsRented = v.RenterId != null,
                     Manifacturer = v.Manufacturer,
                     Price = v.Price,
-                    Rating = v.Owner.Rating
+                    Rating = v.Owner.Rating,
+                    Name = v.Model.Name
                 });
         }
     }
