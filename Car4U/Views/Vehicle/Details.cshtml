@@ -1,4 +1,4 @@
-﻿@model VehicleServiceModel
+﻿@model VehicleDetailsViewModel
 @inject IVehicleService vehicleService
 @inject IOwner ownerService
 @{
@@ -50,5 +50,15 @@
                 </form>
             }
         }
+    </div>
+</div>
+
+<p></p>
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">Owner Info</h5>
+        <p class="card-text">Email:  @Model.Owner.Email</p>
+        <p class="card-text">Phone Number: @Model.Owner.PhoneNumber</p>
+        <p class="card-text">Rating: @Model.Rating</p>
     </div>
 </div>

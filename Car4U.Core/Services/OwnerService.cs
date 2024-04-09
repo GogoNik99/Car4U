@@ -12,6 +12,7 @@ namespace Car4U.Core.Services
         {
             _repository = repository;
         }
+
         public async Task<bool> IsOwnerAsync(int id, string userId)
         {
             var vehicle = await _repository.AllReadOnly<Vehicle>()

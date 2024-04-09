@@ -11,10 +11,11 @@ namespace Car4U.Core.Services
     public class VehicleService : IVehicleService
     {
         private readonly IRepository _repository;
-
-        public VehicleService(IRepository repository)
+        private IOwner _owner;
+        public VehicleService(IRepository repository, IOwner owner)
         {
             _repository = repository;
+            _owner = owner;
         }
 
         public async Task<VehicleQueryServiceModel> AllAsync(string? fuelType = null, string? model = null, string? searchTerm = null, VehiclesSorting sorting = VehiclesSorting.Available, int currentPage = 1, int vehiclesPerPage = 1)
@@ -118,12 +119,13 @@ namespace Car4U.Core.Services
             => await _repository.AllReadOnly<Vehicle>()
                 .AnyAsync(v => v.Id == id);
 
-        public async Task<VehicleServiceModel> GetVehiclesDetailsAsync(int id)
+        public async Task<VehicleDetailsViewModel> GetVehiclesDetailsAsync(int id)
         {
+
             return await _repository.AllReadOnly<Vehicle>()
                 .Where(v => v.Id == id)
                 .Where(v => v.IsActive == true)
-                .Select(v => new VehicleServiceModel()
+                .Select(v => new VehicleDetailsViewModel()
                 {
                     Id = v.Id,
                     Description = v.Description,
@@ -133,7 +135,13 @@ namespace Car4U.Core.Services
                     Manifacturer = v.Manufacturer,
                     Name = v.Model.Name,
                     Price = v.Price,
-                    Rating = v.Owner.Rating
+                    Rating = v.Owner.Rating,
+                    Owner = new Models.Owner.OwnerServiceModel()
+                    {
+                        Address = v.Owner.Address,
+                        Email = v.Owner.User.Email,
+                        PhoneNumber = v.Owner.PhoneNumber
+                    }
                 }).FirstAsync();
         }
 

@@ -56,7 +56,7 @@ namespace Car4U.Controllers
                 return BadRequest();
             }
 
-            VehicleServiceModel model = await _vehicleService.GetVehiclesDetailsAsync(id);
+            VehicleDetailsViewModel model = await _vehicleService.GetVehiclesDetailsAsync(id);
 
             return View(model);
         }
