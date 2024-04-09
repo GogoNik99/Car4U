@@ -11,8 +11,8 @@ namespace Car4U.Core.Services
     public class VehicleService : IVehicleService
     {
         private readonly IRepository _repository;
-        private IOwner _owner;
-        public VehicleService(IRepository repository, IOwner owner)
+        private IOwnerService _owner;
+        public VehicleService(IRepository repository, IOwnerService owner)
         {
             _repository = repository;
             _owner = owner;
@@ -113,6 +113,44 @@ namespace Car4U.Core.Services
                     Name = c.Name,
                 })
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<VehicleServiceModel>> AllVehiclesByOwner(string userId)
+        {
+            return await _repository.AllReadOnly<Vehicle>()
+                    .Where(v => v.Owner.UserId == userId)
+                    .Select(v => new VehicleServiceModel()
+                    {
+                        Id = v.Id,
+                        Description = v.Description,
+                        Fuel = v.FuelType.Name,
+                        ImageFileName = v.ImageFileName,
+                        IsRented = v.RenterId != null,
+                        Manifacturer = v.Manufacturer,
+                        Name = v.Model.Name,
+                        Price = v.Price,
+                        Rating = v.Owner.Rating
+                    })
+                    .ToListAsync();
+        }
+
+        public async Task<IEnumerable<VehicleServiceModel>> AllVehiclesByRenter(string userId)
+        {
+            return await _repository.AllReadOnly<Vehicle>()
+                    .Where(v => v.RenterId == userId)
+                    .Select(v => new VehicleServiceModel()
+                    {
+                        Id = v.Id,
+                        Description = v.Description,
+                        Fuel = v.FuelType.Name,
+                        ImageFileName = v.ImageFileName,
+                        IsRented = v.RenterId != null,
+                        Manifacturer = v.Manufacturer,
+                        Name = v.Model.Name,
+                        Price = v.Price,
+                        Rating = v.Owner.Rating
+                    })
+                    .ToListAsync();
         }
 
         public async Task<bool> ExistsAsync(int id)

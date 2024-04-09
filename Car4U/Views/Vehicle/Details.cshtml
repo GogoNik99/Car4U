@@ -1,6 +1,6 @@
 ﻿@model VehicleDetailsViewModel
 @inject IVehicleService vehicleService
-@inject IOwner ownerService
+@inject IOwnerService ownerService
 @{
     ViewBag.Title = "Vehicle Details";
 }
@@ -23,7 +23,18 @@
         <b>@String.Format("{0:f2}", Model.Price) BGN</b></>
     </p>
     <p>@Model.Description</p>
-    <p><i>(@(Model.IsRented ? "Rented" : "Not Rented"))</i></p>
+    <p>
+        <i>
+            @if (Model.IsRented == true)
+            {
+                <button type="button" class="btn btn-primary" disabled>Rented</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-secondary" disabled>Not Rented</button>
+            }
+        </i>
+    </p>
     <div class="form-inline">
         @if (this.User.Identity.IsAuthenticated)
         {
@@ -57,8 +68,8 @@
 <div class="card" style="width: 18rem;">
     <div class="card-body">
         <h5 class="card-title">Owner Info</h5>
-        <p class="card-text">Email:  @Model.Owner.Email</p>
-        <p class="card-text">Phone Number: @Model.Owner.PhoneNumber</p>
-        <p class="card-text">Rating: @Model.Rating</p>
+        <p class="card-text">Owner Email:  @Model.Owner.Email</p>
+        <p class="card-text">Owner Phone Number: @Model.Owner.PhoneNumber</p>
+        <p class="card-text">Owner Rating: @Model.Rating</p>
     </div>
 </div>

@@ -2,6 +2,7 @@
 using Car4U.Core.Models.Vehicle;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Car4U.Controllers
 {
@@ -11,16 +12,20 @@ namespace Car4U.Controllers
 
         private readonly IImageService _imageService;
 
+        private readonly IOwnerService _ownerService;
+
         private readonly ILogger _logger;
 
         public VehicleController(
             IVehicleService vehicleService,
             IImageService imageService,
-            ILogger<VehicleController> logger)
+            ILogger<VehicleController> logger,
+            IOwnerService ownerService)
         {
             _vehicleService = vehicleService;
             _imageService = imageService;
             _logger = logger;
+            _ownerService = ownerService;
         }
 
         [AllowAnonymous]
@@ -57,6 +62,26 @@ namespace Car4U.Controllers
             }
 
             VehicleDetailsViewModel model = await _vehicleService.GetVehiclesDetailsAsync(id);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RentedVehicles()
+        {
+            var userId = User.Id();
+
+            IEnumerable<VehicleServiceModel> model = await _vehicleService.AllVehiclesByRenter(userId);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OwnedVehicles()
+        {
+            var userId = User.Id();
+
+            IEnumerable<VehicleServiceModel> model = await _vehicleService.AllVehiclesByOwner(userId);
 
             return View(model);
         }

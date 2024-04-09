@@ -27,5 +27,9 @@ namespace Car4U.Core.Contracts
         Task<bool> HasOwnerWithIdAsync(int id, string userId);
 
         Task<bool> IsRentedByIUserWithIdAsync(int id, string userId);
+
+        Task<IEnumerable<VehicleServiceModel>> AllVehiclesByOwner(string userId);
+
+        Task<IEnumerable<VehicleServiceModel>> AllVehiclesByRenter(string userId);
     }
 }

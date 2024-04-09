@@ -1,0 +1,20 @@
+﻿@model IEnumerable<VehicleServiceModel>
+
+@{
+    ViewBag.Title = "Rented Vehicles";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+@if (Model.Any() == false)
+{
+    <h3 class="text-center">You haven't rented Vehicle yet !</h3>
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <partial name="_RentedVehiclePartial" model="@item" />
+    }
+</div>

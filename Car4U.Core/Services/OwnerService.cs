@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Car4U.Core.Services
 {
-    public class OwnerService : IOwner
+    public class OwnerService : IOwnerService
     {
         private readonly IRepository _repository;
         public OwnerService(IRepository repository)
@@ -26,5 +26,17 @@ namespace Car4U.Core.Services
             return true;
         }
 
+        public async Task<bool> OwnerExistsAsync(string userId)
+        {
+            var owner = await _repository.AllReadOnly<Owner>()
+                .FirstOrDefaultAsync(o => o.UserId == userId);
+
+            if (owner == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

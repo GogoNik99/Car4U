@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IVehicleService, VehicleService>();
-            services.AddScoped<IOwner, OwnerService>();
+            services.AddScoped<IOwnerService, OwnerService>();
 
             return services;
         }
