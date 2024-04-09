@@ -10,7 +10,7 @@
                 <b>@String.Format("{0:f2}", Model.Price) BGN</b>
             </h6>
             <h6>Rating : <b>@Model.Rating</b></h6>
-            <a asp-controller="House" asp-action="Details" asp-route-id="@Model.Id"
+            <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@Model.Id"
                class="btn btn-success">Details</a>
             @if (this.User.Identity.IsAuthenticated)
             {

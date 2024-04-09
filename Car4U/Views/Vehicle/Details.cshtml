@@ -1,0 +1,54 @@
+﻿@model VehicleServiceModel
+@inject IVehicleService vehicleService
+@inject IOwner ownerService
+@{
+    ViewBag.Title = "Vehicle Details";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<div class="container" style="display:inline">
+    <div class="row">
+        <div class="col-4">
+            <img class="card-img-top" style="width: 20rem;"
+                 src="~/img/@Model.ImageFileName"/>
+        </div>
+    </div>
+</div>
+<div class="card col-8 border-0">
+    <p style="font-size:25px;"><u>@Model.Name</u></p>
+    <p>Fuel Type: <b>@Model.Fuel</b></p>
+    <p>
+        Price Per Day: 
+        <b>@String.Format("{0:f2}", Model.Price) BGN</b></>
+    </p>
+    <p>@Model.Description</p>
+    <p><i>(@(Model.IsRented ? "Rented" : "Not Rented"))</i></p>
+    <div class="form-inline">
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            if (await vehicleService.HasOwnerWithIdAsync(Model.Id, User.Id()))
+            {
+                <a class="btn btn-warning" asp-controller="Vehicle" asp-action="Edit"
+                     asp-route-id="@Model.Id">Edit</a>
+                <a class="ml-2 btn btn-danger" asp-controller="Vehicle" asp-action="Delete"
+                     asp-route-id="@Model.Id">Delete</a>
+            }
+
+            @if (!Model.IsRented && (await ownerService.IsOwnerAsync(Model.Id, User.Id())) == false)
+            {
+                <form class="ml-2" asp-controller="Vehicle"
+                   asp-action="Rent" asp-route-id="@Model.Id" method="post">
+                    <input class="btn btn-primary" type="submit" value="Rent" />
+                </form>
+            }
+            else if (await vehicleService.IsRentedByIUserWithIdAsync(Model.Id, User.Id()))
+            {
+                <form class="ml-2" asp-controller="Vehicle" asp-action="Leave"
+                     asp-route-id="@Model.Id" method="post">
+                    <input class="btn btn-primary" type="submit" value="Leave" />
+                </form>
+            }
+        }
+    </div>
+</div>

@@ -113,5 +113,38 @@ namespace Car4U.Core.Services
                 })
                 .ToListAsync();
         }
+
+        public async Task<bool> ExistsAsync(int id)
+            => await _repository.AllReadOnly<Vehicle>()
+                .AnyAsync(v => v.Id == id);
+
+        public async Task<VehicleServiceModel> GetVehiclesDetailsAsync(int id)
+        {
+            return await _repository.AllReadOnly<Vehicle>()
+                .Where(v => v.Id == id)
+                .Where(v => v.IsActive == true)
+                .Select(v => new VehicleServiceModel()
+                {
+                    Id = v.Id,
+                    Description = v.Description,
+                    Fuel = v.FuelType.Name,
+                    ImageFileName = v.ImageFileName,
+                    IsRented = v.RenterId != null,
+                    Manifacturer = v.Manufacturer,
+                    Name = v.Model.Name,
+                    Price = v.Price,
+                    Rating = v.Owner.Rating
+                }).FirstAsync();
+        }
+
+        public async Task<bool> HasOwnerWithIdAsync(int id, string userId)
+            => await _repository.AllReadOnly<Vehicle>()
+                .AnyAsync(v => v.Id == id && v.Owner.UserId == userId);
+
+        public async Task<bool> IsRentedByIUserWithIdAsync(int id, string userId)
+            => await _repository.AllReadOnly<Vehicle>()
+                .AnyAsync(v => v.Id == id && v.RenterId == userId);
+
+
     }
 }

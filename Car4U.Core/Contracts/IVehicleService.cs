@@ -19,5 +19,13 @@ namespace Car4U.Core.Contracts
 
         Task<IEnumerable<string>> AllModelNamesAsync();
         Task<IEnumerable<string>> AllFuelTypeNamesAsync();
+
+        Task<VehicleServiceModel> GetVehiclesDetailsAsync(int id);
+
+        Task<bool> ExistsAsync(int id);
+
+        Task<bool> HasOwnerWithIdAsync(int id, string userId);
+
+        Task<bool> IsRentedByIUserWithIdAsync(int id, string userId);
     }
 }

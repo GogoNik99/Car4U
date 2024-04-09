@@ -47,5 +47,18 @@ namespace Car4U.Controllers
 
             return View(input);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            if (await _vehicleService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            VehicleServiceModel model = await _vehicleService.GetVehiclesDetailsAsync(id);
+
+            return View(model);
+        }
     }
 }

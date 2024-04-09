@@ -14,6 +14,13 @@ namespace Car4U.Core.Models.Vehicle
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredMessage)]
+        [StringLength(FuelTypeNameMaxLength,
+            MinimumLength = FuelTypeNameMinLength,
+            ErrorMessage = LengthMessage)]
+
+        public string Fuel { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = RequiredMessage)]
         [StringLength(VehicleManufacturerMaxLenght,
             MinimumLength = VehicleManufacturerMinLenght,
             ErrorMessage = LengthMessage)]
