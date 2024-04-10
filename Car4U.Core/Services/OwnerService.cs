@@ -13,6 +13,19 @@ namespace Car4U.Core.Services
             _repository = repository;
         }
 
+        public async Task CreateAsync(string userId, string phoneNumber, string Address)
+        {
+            await _repository.AddAsync(new Owner()
+            {
+                UserId = userId,
+                PhoneNumber = phoneNumber,
+                Address = Address,
+                Rating = 0,
+            });
+
+            await _repository.SaveChangesAsync();
+        }
+
         public async Task<bool> IsOwnerAsync(int id, string userId)
         {
             var vehicle = await _repository.AllReadOnly<Vehicle>()
@@ -27,16 +40,13 @@ namespace Car4U.Core.Services
         }
 
         public async Task<bool> OwnerExistsAsync(string userId)
-        {
-            var owner = await _repository.AllReadOnly<Owner>()
-                .FirstOrDefaultAsync(o => o.UserId == userId);
+            => await _repository.AllReadOnly<Owner>().AnyAsync(o => o.UserId == userId);
 
-            if (owner == null)
-            {
-                return false;
-            }
+        public async Task<bool> OwnerWithAddressExistsAsync(string Address)
+            => await _repository.AllReadOnly<Owner>().AnyAsync(o => o.Address == Address);
 
-            return true;
-        }
+
+        public async Task<bool> OwnerWithPhoneNumberExistsAsync(string phoneNumber)
+            => await _repository.AllReadOnly<Owner>().AnyAsync(o => o.PhoneNumber == phoneNumber);
     }
 }

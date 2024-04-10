@@ -5,5 +5,11 @@
         Task<bool> IsOwnerAsync(int id, string userId);
 
         Task<bool> OwnerExistsAsync(string userId);
+
+        Task<bool> OwnerWithPhoneNumberExistsAsync(string phoneNumber);
+
+        Task<bool> OwnerWithAddressExistsAsync(string Address);
+
+        Task CreateAsync(string userId, string phoneNumber, string Address);
     }
 }
