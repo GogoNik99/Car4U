@@ -20,10 +20,18 @@ namespace Car4U.Core.Services
                 UserId = userId,
                 PhoneNumber = phoneNumber,
                 Address = Address,
-                Rating = 0,
+                Rating = 0
             });
 
             await _repository.SaveChangesAsync();
+        }
+
+        public async Task<int> GetOwnerIdAsync(string userId)
+        {
+            var owner = await _repository.AllReadOnly<Owner>()
+                .FirstAsync(o => o.UserId == userId);
+
+            return owner.Id;
         }
 
         public async Task<bool> IsOwnerAsync(int id, string userId)

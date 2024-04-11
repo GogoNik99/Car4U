@@ -11,11 +11,22 @@ namespace Car4U.Core.Services
     public class VehicleService : IVehicleService
     {
         private readonly IRepository _repository;
+
         private IOwnerService _owner;
-        public VehicleService(IRepository repository, IOwnerService owner)
+
+        private IModelService _model;
+
+        private readonly IImageService _imageService;
+        public VehicleService
+            (IRepository repository,
+            IOwnerService owner,
+            IModelService model,
+            IImageService imageService)
         {
             _repository = repository;
             _owner = owner;
+            _model = model;
+            _imageService = imageService;
         }
 
         public async Task<VehicleQueryServiceModel> AllAsync(string? fuelType = null, string? model = null, string? searchTerm = null, VehiclesSorting sorting = VehiclesSorting.Available, int currentPage = 1, int vehiclesPerPage = 1)
@@ -153,9 +164,36 @@ namespace Car4U.Core.Services
                     .ToListAsync();
         }
 
+        public async Task CreateAsync(VehicleFormModel model, int ownerId)
+        {
+            if (!await _model.ModelExistsAsync(model.ModelName))
+            {
+                await _model.CreateModelAsync(model.ModelName);
+            }
+
+            Vehicle vehicle = new Vehicle()
+            {
+                FuelTypeId = model.FuelTypeId,
+                IsActive = false,
+                Description = model.Description,
+                ImageFileName = await _imageService.UploadAsync(model.Image),
+                Manufacturer = model.Manifacturer,
+                OwnerId = ownerId,
+                Price = model.Price,
+                ModelId = await _model.GetModelIdAsync(model.ModelName)
+            };
+
+            await _repository.AddAsync(vehicle);
+            await _repository.SaveChangesAsync();
+        }
+
         public async Task<bool> ExistsAsync(int id)
             => await _repository.AllReadOnly<Vehicle>()
                 .AnyAsync(v => v.Id == id);
+
+        public async Task<bool> FuelTypeExists(int id)
+            => await _repository.AllReadOnly<FuelType>()
+                .AnyAsync(f => f.Id == id);
 
         public async Task<VehicleDetailsViewModel> GetVehiclesDetailsAsync(int id)
         {

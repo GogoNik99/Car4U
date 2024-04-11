@@ -22,6 +22,7 @@ namespace Car4U.Core.Contracts
 
         Task<VehicleDetailsViewModel> GetVehiclesDetailsAsync(int id);
 
+        Task<bool> FuelTypeExists(int id);
         Task<bool> ExistsAsync(int id);
 
         Task<bool> HasOwnerWithIdAsync(int id, string userId);
@@ -31,5 +32,6 @@ namespace Car4U.Core.Contracts
         Task<IEnumerable<VehicleServiceModel>> AllVehiclesByOwner(string userId);
 
         Task<IEnumerable<VehicleServiceModel>> AllVehiclesByRenter(string userId);
+        Task CreateAsync(VehicleFormModel model, int ownerId);
     }
 }

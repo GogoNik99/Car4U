@@ -1,5 +1,6 @@
 ﻿using Car4U.Core.Contracts;
 using Car4U.Core.Models.Vehicle;
+using Car4U.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,20 +11,16 @@ namespace Car4U.Controllers
     {
         private readonly IVehicleService _vehicleService;
 
-        private readonly IImageService _imageService;
-
         private readonly IOwnerService _ownerService;
 
         private readonly ILogger _logger;
 
         public VehicleController(
             IVehicleService vehicleService,
-            IImageService imageService,
             ILogger<VehicleController> logger,
             IOwnerService ownerService)
         {
             _vehicleService = vehicleService;
-            _imageService = imageService;
             _logger = logger;
             _ownerService = ownerService;
         }
@@ -84,6 +81,51 @@ namespace Car4U.Controllers
             IEnumerable<VehicleServiceModel> model = await _vehicleService.AllVehiclesByOwner(userId);
 
             return View(model);
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> Register()
+        {
+            if (!await _ownerService.OwnerExistsAsync(User.Id()))
+            {
+                ModelState.AddModelError(nameof(Owner), "Not registered as Owner");
+            }
+
+            var model = new VehicleFormModel()
+            {
+                FuelTypes = await _vehicleService.AllFuelTypesAsync()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Register(VehicleFormModel model)
+        {
+            if (!await _ownerService.OwnerExistsAsync(User.Id()))
+            {
+                ModelState.AddModelError(nameof(Owner), "Not registered as Owner");
+            }
+
+            if (!await _vehicleService.FuelTypeExists(model.FuelTypeId))
+            {
+                ModelState.AddModelError(nameof(model.FuelTypeId), "There is no such fuel type!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.FuelTypes = await _vehicleService.AllFuelTypesAsync();
+
+                return View(model);
+            }
+
+            int OwnerId = await _ownerService.GetOwnerIdAsync(User.Id());
+
+            await _vehicleService.CreateAsync(model, OwnerId);
+
+            return RedirectToAction(nameof(OwnedVehicles), nameof(Vehicle));
         }
     }
 }

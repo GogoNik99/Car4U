@@ -41,6 +41,7 @@ namespace Car4U.Core.Models.Vehicle
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = RequiredMessage)]
+        [FileExtensions]
         public string ImageFileName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredMessage)]
