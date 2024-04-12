@@ -234,6 +234,7 @@ namespace Car4U.Core.Services
                 .Where(v => v.Id == id)
                 .Select(v => new VehicleFormModel
                 {
+                    id = v.Id,
                     Description = v.Description,
                     FuelTypeId = v.FuelTypeId,
                     Manifacturer = v.Manufacturer,
@@ -268,5 +269,52 @@ namespace Car4U.Core.Services
             }
 
         }
+
+        public async Task RentAsync(int id, string userId)
+        {
+            var vehicle = await _repository.GetByIdAsync<Vehicle>(id);
+
+            if (vehicle != null)
+            {
+                vehicle.RenterId = userId;
+            }
+
+            await _repository.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsRentedAsync(int id)
+            => await _repository.AllReadOnly<Vehicle>()
+                .Where(v => v.Id == id)
+                .AnyAsync(v => v.RenterId != null);
+
+        public async Task ReturnAsync(int id)
+        {
+            var vehicle = await _repository.GetByIdAsync<Vehicle>(id);
+
+            if (vehicle != null)
+            {
+                vehicle.RenterId = null;
+            }
+
+            await _repository.SaveChangesAsync();
+        }
+
+        public async Task DeleteVehicleAsync(int id)
+        {
+            await _repository.DeleteAsync<Vehicle>(id);
+            await _repository.SaveChangesAsync();
+        }
+
+        public async Task<VehicleDeleteDetailsViewModel?> GetDeleteDetailsAsync(int id)
+            => await _repository.AllReadOnly<Vehicle>()
+                .Where(v => v.Id == id)
+                .Select(v => new VehicleDeleteDetailsViewModel
+                {
+                    Description = v.Description,
+                    Id = v.Id,
+                    ImageName = v.ImageFileName,
+                    ModelName = v.Model.Name
+                })
+                .FirstOrDefaultAsync();
     }
 }

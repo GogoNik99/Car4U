@@ -7,6 +7,8 @@ namespace Car4U.Core.Models.Vehicle
 {
     public class VehicleFormModel
     {
+        public int id { get; set; }
+
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(VehicleManufacturerMaxLenght,
             MinimumLength = VehicleManufacturerMinLenght,

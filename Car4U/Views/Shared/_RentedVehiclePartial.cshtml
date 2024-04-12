@@ -17,9 +17,9 @@
                class="btn btn-success">Details</a>
             @if (await vehicalService.IsRentedByIUserWithIdAsync(Model.Id, User.Id()))
             {
-                <form class="ml-2" asp-controller="Vehicle" asp-action="Leave"
+                <form class="ml-2" asp-controller="Vehicle" asp-action="Return"
                   asp-route-id="@Model.Id" method="post">
-                    <input class="btn btn-primary" type="submit" value="Leave" />
+                    <input class="btn btn-primary" type="submit" value="Return" />
                 </form>
             }
         </div>

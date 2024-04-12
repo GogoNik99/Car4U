@@ -36,5 +36,11 @@ namespace Car4U.Core.Contracts
 
         Task<VehicleFormModel?> GetVehicleFormById(int id);
         Task EditAsync(int id, VehicleFormModel model);
+        Task RentAsync(int id, string userId);
+        Task<bool> IsRentedAsync(int id);
+        Task ReturnAsync(int id);
+        Task DeleteVehicleAsync(int id);
+
+        Task<VehicleDeleteDetailsViewModel?> GetDeleteDetailsAsync(int id);
     }
 }

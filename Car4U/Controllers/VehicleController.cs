@@ -188,5 +188,102 @@ namespace Car4U.Controllers
             return RedirectToAction(nameof(Details), new { id });
 
         }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Rent(int id)
+        {
+            if (!await _vehicleService.ExistsAsync(id))
+            {
+                return NotFound();
+            }
+
+            if (await _vehicleService.IsRentedAsync(id))
+            {
+                return BadRequest();
+            }
+
+            if (await _ownerService.IsOwnerAsync(id, User.Id()))
+            {
+                return BadRequest();
+            }
+
+            await _vehicleService.RentAsync(id, User.Id());
+
+            return RedirectToAction(nameof(RentedVehicles));
+        }
+
+
+        [HttpPost]
+
+        public async Task<IActionResult> Return(int id)
+        {
+            if (!await _vehicleService.ExistsAsync(id))
+            {
+                return NotFound();
+            }
+
+            if (!await _vehicleService.IsRentedAsync(id))
+            {
+                return BadRequest();
+            }
+
+            if (!await _vehicleService.IsRentedByIUserWithIdAsync(id, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            if (await _ownerService.IsOwnerAsync(id, User.Id()))
+            {
+                return BadRequest();
+            }
+
+            await _vehicleService.ReturnAsync(id);
+
+            return RedirectToAction(nameof(RentedVehicles));
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!await _vehicleService.ExistsAsync(id))
+            {
+                return NotFound();
+            }
+
+            if (!await _ownerService.IsOwnerAsync(id, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            var model = await _vehicleService.GetDeleteDetailsAsync(id);
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Delete(VehicleDeleteDetailsViewModel model)
+        {
+            if (!await _vehicleService.ExistsAsync(model.Id))
+            {
+                return NotFound();
+            }
+
+            if (!await _ownerService.IsOwnerAsync(model.Id, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            await _vehicleService.DeleteVehicleAsync(model.Id);
+
+            return RedirectToAction(nameof(OwnedVehicles));
+        }
     }
 }
