@@ -53,5 +53,7 @@ namespace Car4U.Core.Models.Vehicle
         public decimal Rating { get; set; }
 
         public bool IsRented { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

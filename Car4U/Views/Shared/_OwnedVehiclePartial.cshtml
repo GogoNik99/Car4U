@@ -18,6 +18,16 @@
                         <button type="button" class="btn btn-secondary" disabled>Not Rented</button>
                     }
                 </i>
+
+                <i>@if(Model.IsActive == true)
+                    {
+                        <button type="button" class="btn btn-success" disabled>Vehicle Verified</button>
+                    }
+                    else
+                    {
+                            <button type="button" class="btn btn-warning" disabled>Vehicle Not Verified</button>
+                    }
+                </i>
             </p>
             <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@Model.Id"
                class="btn btn-success">Details</a>

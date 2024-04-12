@@ -33,5 +33,8 @@ namespace Car4U.Core.Contracts
 
         Task<IEnumerable<VehicleServiceModel>> AllVehiclesByRenter(string userId);
         Task CreateAsync(VehicleFormModel model, int ownerId);
+
+        Task<VehicleFormModel?> GetVehicleFormById(int id);
+        Task EditAsync(int id, VehicleFormModel model);
     }
 }

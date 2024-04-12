@@ -140,7 +140,8 @@ namespace Car4U.Core.Services
                         Manifacturer = v.Manufacturer,
                         Name = v.Model.Name,
                         Price = v.Price,
-                        Rating = v.Owner.Rating
+                        Rating = v.Owner.Rating,
+                        IsActive = v.IsActive
                     })
                     .ToListAsync();
         }
@@ -197,10 +198,8 @@ namespace Car4U.Core.Services
 
         public async Task<VehicleDetailsViewModel> GetVehiclesDetailsAsync(int id)
         {
-
             return await _repository.AllReadOnly<Vehicle>()
                 .Where(v => v.Id == id)
-                .Where(v => v.IsActive == true)
                 .Select(v => new VehicleDetailsViewModel()
                 {
                     Id = v.Id,
@@ -212,6 +211,7 @@ namespace Car4U.Core.Services
                     Name = v.Model.Name,
                     Price = v.Price,
                     Rating = v.Owner.Rating,
+                    IsActive = v.IsActive,
                     Owner = new Models.Owner.OwnerServiceModel()
                     {
                         Address = v.Owner.Address,
@@ -229,6 +229,44 @@ namespace Car4U.Core.Services
             => await _repository.AllReadOnly<Vehicle>()
                 .AnyAsync(v => v.Id == id && v.RenterId == userId);
 
+        public async Task<VehicleFormModel?> GetVehicleFormById(int id)
+            => await _repository.AllReadOnly<Vehicle>()
+                .Where(v => v.Id == id)
+                .Select(v => new VehicleFormModel
+                {
+                    Description = v.Description,
+                    FuelTypeId = v.FuelTypeId,
+                    Manifacturer = v.Manufacturer,
+                    ModelName = v.Model.Name,
+                    Price = v.Price
+                })
+                .FirstOrDefaultAsync();
 
+        public async Task EditAsync(int id, VehicleFormModel model)
+        {
+            var vehicle = await _repository.GetByIdAsync<Vehicle>(id);
+
+            if (vehicle != null)
+            {
+                vehicle.Price = model.Price;
+                vehicle.Manufacturer = model.Manifacturer;
+                vehicle.FuelTypeId = model.FuelTypeId;
+                vehicle.Description = model.Description;
+                if (!await _model.ModelExistsAsync(model.ModelName))
+                {
+                    await _model.CreateModelAsync(model.ModelName);
+                    vehicle.Model.Name = model.ModelName;
+                }
+
+                if (model.Image != null)
+                {
+                    _imageService.DeleteImg(vehicle.ImageFileName);
+                    vehicle.ImageFileName = await _imageService.UploadAsync(model.Image);
+                }
+
+                await _repository.SaveChangesAsync();
+            }
+
+        }
     }
 }

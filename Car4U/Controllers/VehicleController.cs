@@ -60,6 +60,11 @@ namespace Car4U.Controllers
 
             VehicleDetailsViewModel model = await _vehicleService.GetVehiclesDetailsAsync(id);
 
+            if (!model.IsActive && !await _ownerService.IsOwnerAsync(id, User.Id()))
+            {
+                return BadRequest();
+            }
+
             return View(model);
         }
 
@@ -126,6 +131,62 @@ namespace Car4U.Controllers
             await _vehicleService.CreateAsync(model, OwnerId);
 
             return RedirectToAction(nameof(OwnedVehicles), nameof(Vehicle));
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await _vehicleService.GetVehicleFormById(id);
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            if (!await _ownerService.OwnerExistsAsync(User.Id()))
+            {
+                ModelState.AddModelError(nameof(Owner), "Not registered as Owner");
+            }
+
+            if (!await _ownerService.IsOwnerAsync(id, User.Id()))
+            {
+                return Unauthorized();
+            }
+            model.FuelTypes = await _vehicleService.AllFuelTypesAsync();
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Edit(VehicleFormModel model, int id)
+        {
+            var vehicle = await _vehicleService.GetVehicleFormById(id);
+
+            if (vehicle == null)
+            {
+                return BadRequest();
+            }
+            if (!await _ownerService.OwnerExistsAsync(User.Id()))
+            {
+                ModelState.AddModelError(nameof(Owner), "Not registered as Owner");
+            }
+
+            if (!await _ownerService.IsOwnerAsync(id, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            await _vehicleService.EditAsync(id, model);
+
+            return RedirectToAction(nameof(Details), new { id });
+
         }
     }
 }
