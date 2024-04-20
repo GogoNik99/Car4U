@@ -1,5 +1,6 @@
 ﻿@model VehicleServiceModel
-
+@inject IVehicleService vehicleService
+@inject IOwnerService ownerService
 <div class="col-md-4">
     <div class="card mb-3">
         <img height="200" width="100" class="card-img-top" src="~/img/@Model.ImageFileName" alt="Card image cap">
@@ -12,28 +13,29 @@
             <h6>Owner Rating : <b>@Model.Rating</b></h6>
             <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@Model.Id"
                class="btn btn-success">Details</a>
-            @if (this.User.Identity.IsAuthenticated)
+            @if (this.User.Identity.IsAuthenticated && await ownerService.IsOwnerAsync(Model.Id, User.Id()))
             {
                 <a asp-controller="Vehicle" asp-action="Edit" asp-route-id="@Model.Id"
                    class="btn btn-warning">Edit</a>
 
                 <a asp-controller="Vehicle" asp-action="Delete" asp-route-id="@Model.Id"
                    class="btn btn-danger">Delete</a>
-
-                <p></p>
-                @if (!Model.IsRented)
-                {
-                    <form class="input-group-sm" asp-controller="Vehicle" asp-action="Rent"
-                        asp-route-id="@Model.Id" method="post"> <input class="btn btn-primary" type="submit" value="Rent" /> 
-                    </form>
-                }
-                else
-                {
-                    <form asp-controller="Vehicle" asp-action="Return" asp-route-id="@Model.Id" method="post">
-                        <input class="btn btn-primary" type="submit" value="Return" />
-                    </form>
-                }
             }
+            <p></p>
+            @if (!Model.IsRented && await ownerService.IsOwnerAsync(Model.Id, User.Id()) == false)
+            {
+                <form class="input-group-sm" asp-controller="Vehicle" asp-action="Rent"
+                  asp-route-id="@Model.Id" method="post">
+                    <input class="btn btn-primary" type="submit" value="Rent" />
+                </form>
+            }
+            else if (Model.IsRented && await vehicleService.IsRentedByIUserWithIdAsync(Model.Id, User.Id()))
+            {
+                <form asp-controller="Vehicle" asp-action="Return" asp-route-id="@Model.Id" method="post">
+                    <input class="btn btn-primary" type="submit" value="Return" />
+                </form>
+            }
+            
         </div>
     </div>
 </div>

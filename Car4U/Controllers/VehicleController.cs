@@ -55,7 +55,7 @@ namespace Car4U.Controllers
         {
             if (await _vehicleService.ExistsAsync(id) == false)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             VehicleDetailsViewModel model = await _vehicleService.GetVehiclesDetailsAsync(id);
@@ -141,7 +141,7 @@ namespace Car4U.Controllers
 
             if (model == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             if (!await _ownerService.OwnerExistsAsync(User.Id()))
@@ -171,7 +171,7 @@ namespace Car4U.Controllers
 
             if (vehicle == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             if (!await _ownerService.OwnerExistsAsync(User.Id()))
             {

@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Car4U.Core\Car4U.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\ErrorImg\" />
+  </ItemGroup>
+
 </Project>
