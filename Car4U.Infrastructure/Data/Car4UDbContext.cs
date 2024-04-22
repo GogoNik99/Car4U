@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Car4U.Data.Infrastructure
 {
-    public class Car4UDbContext : IdentityDbContext
+    public class Car4UDbContext : IdentityDbContext<ApplicationUser>
     {
         public Car4UDbContext(DbContextOptions<Car4UDbContext> options)
             : base(options)
@@ -19,6 +19,7 @@ namespace Car4U.Data.Infrastructure
             builder.ApplyConfiguration(new FuelTypeConfiguration());
             builder.ApplyConfiguration(new ModelConfiguration());
             builder.ApplyConfiguration(new VehicleConfiguration());
+            builder.ApplyConfiguration(new RatingConfiguration());
 
             base.OnModelCreating(builder);
         }
@@ -30,5 +31,7 @@ namespace Car4U.Data.Infrastructure
         public DbSet<Vehicle> Vehicles { get; set; } = null!;
 
         public DbSet<FuelType> FuelTypes { get; set; } = null!;
+
+        public DbSet<Rating> Ratings { get; set; } = null!;
     }
 }

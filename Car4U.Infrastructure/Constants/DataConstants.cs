@@ -40,6 +40,18 @@
 
         public const int VehicleImgNameMaxLenght = 50;
 
+        public const int RatingDecriptionMinLenght = 20;
+
+        public const int RatingDecriptionMaxLenght = 150;
+
+        public const int UserFirstNameMinLenght = 2;
+
+        public const int UserFirstNameMaxLenght = 30;
+
+        public const int UserLastNameMaxLenght = 30;
+
+        public const int UserLastNameMinLenght = 2;
+
         public const string ImagePath = @"D:\programing\Car4U\Car4U\wwwroot\img";
 
     }

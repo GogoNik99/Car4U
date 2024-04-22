@@ -8,9 +8,10 @@ namespace Car4U.Infrastructure.Data.SeedDb
     {
         public void Configure(EntityTypeBuilder<Owner> builder)
         {
+
             var data = new SeedData();
 
-            builder.HasData(data.Owner1, data.Owner2);
+            builder.HasData(data.Owner1, data.Owner2, data.AdminOwner);
         }
     }
 }
