@@ -2,6 +2,7 @@
 using Car4U.Core.Services;
 using Car4U.Data.Infrastructure;
 using Car4U.Infrastructure.Data.Common;
+using Car4U.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration config)
         {
             services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<ApplicationUser>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
                     options.Password.RequireNonAlphanumeric = false;
@@ -44,6 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<Car4UDbContext>();
 
             return services;
