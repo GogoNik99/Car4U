@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Security.Claims;
 namespace Car4U.Controllers
 {
     public class HomeController : BaseController
@@ -15,6 +15,10 @@ namespace Car4U.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            if (User.IsAdmin())
+            {
+                return RedirectToAction("Tasks", "Home", new { area = "Admin" });
+            }
             return View();
         }
 

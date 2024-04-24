@@ -33,10 +33,10 @@
                class="btn btn-success">Details</a>
             @if (this.User.Identity.IsAuthenticated && await ownerService.IsOwnerAsync(Model.Id, User.Id()))
             {
-                <a asp-controller="Vehicle" asp-action="Edit" asp-route-id="@Model.Id"
+                <a asp-area="" asp-controller="Vehicle" asp-action="Edit" asp-route-id="@Model.Id"
                    class="btn btn-warning">Edit</a>
 
-                <a asp-controller="Vehicle" asp-action="Delete" asp-route-id="@Model.Id"
+                <a asp-area="" asp-controller="Vehicle" asp-action="Delete" asp-route-id="@Model.Id"
                    class="btn btn-danger">Delete</a>
             }
         </div>

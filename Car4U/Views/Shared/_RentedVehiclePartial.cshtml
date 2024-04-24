@@ -13,11 +13,11 @@
                 <b>@String.Format("{0:f2}", Model.Price) BGN</b>
             </h6>
             <h6>Owner Rating : <b>@Model.Rating</b></h6>
-            <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@Model.Id"
+            <a asp-area="" asp-controller="Vehicle" asp-action="Details" asp-route-id="@Model.Id"
                class="btn btn-success">Details</a>
             @if (await vehicalService.IsRentedByIUserWithIdAsync(Model.Id, User.Id()))
             {
-                <form class="ml-2" asp-controller="Vehicle" asp-action="Return"
+                <form class="ml-2" asp-area="" asp-controller="Vehicle" asp-action="Return"
                   asp-route-id="@Model.Id" method="post">
                     <input class="btn btn-primary" type="submit" value="Return" />
                 </form>

@@ -1,8 +1,10 @@
 using Car4U.Extensions;
 using Car4U.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("Car4UDbContextConnection") ?? throw new InvalidOperationException("Connection string 'Car4UDbContextConnection' not found.");
 
 builder.Services.AddApplicationDbContext(builder.Configuration);
 
