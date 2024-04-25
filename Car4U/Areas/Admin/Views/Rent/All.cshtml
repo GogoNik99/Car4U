@@ -1,0 +1,42 @@
+﻿@model IEnumerable<RentViewModel>
+
+@{
+    ViewBag.Title = "All Rents";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th><label>Model Name</label></th>
+            <th><label>Renter Name</label></th>
+            <th><label>Owner Name</label></th>
+            <th><label>Owner Phone Number</label></th>
+            <th><label>Owner Email</label></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rent in Model)
+        {
+            <tr>
+                <td>
+                    <div class="text-left 4"><a asp-area="Admin" asp-controller="Vehicle" asp-action="Details" asp-route-id="@rent.Id">@rent.ModelName</a></div>
+                <td>
+                    <label>@rent.RenterName</label>
+                </td>
+                <td>
+                    <label>@rent.OwnerName</label>
+                </td>
+                <td>
+                    <label>@rent.PhoneNumber</label>
+                </td>
+                <td>
+                    <label>@rent.OwnerEmail</label>
+                </td>
+                
+            </tr>
+        }
+
+    </tbody>
+</table>

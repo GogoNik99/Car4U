@@ -1,0 +1,46 @@
+﻿@model VehicleDetailsViewModel
+@inject IVehicleService vehicleService
+@inject IOwnerService ownerService
+@{
+    ViewBag.Title = "Vehicle Details";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<div class="container" style="display:inline">
+    <div class="row">
+        <div class="col-4">
+            <img class="card-img-top" style="width: 20rem;"
+                 src="~/img/@Model.ImageFileName" />
+        </div>
+    </div>
+</div>
+<div class="card col-8 border-0">
+    <p style="font-size:25px;"><u>@Model.Name</u></p>
+    <p>Fuel Type: <b>@Model.Fuel</b></p>
+    <p>
+        Price Per Day:
+        <b>@String.Format("{0:f2}", Model.Price) BGN</b></>
+    </p>
+    <p>Manifacturer<b>@Model.Manifacturer</b></p>
+    <p>@Model.Description</p>
+    @if (!await vehicleService.IsVehicleApproved(Model.Id))
+    {
+        <form class="ml-2" asp-area="Admin" asp-controller="Vehicle"
+          asp-action="Approve" asp-route-id="@Model.Id" method="post">
+            <input class="btn btn-primary" type="submit" value="Approve" />
+        </form>
+    }
+    
+</div>
+
+<p></p>
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">Owner Info</h5>
+        <p class="card-text">Owner Name:  @Model.Owner.Name</p>
+        <p class="card-text">Owner Email:  @Model.Owner.Email</p>
+        <p class="card-text">Owner Phone Number: @Model.Owner.PhoneNumber</p>
+        <p class="card-text">Owner Rating: @Model.Rating</p>
+    </div>
+</div>

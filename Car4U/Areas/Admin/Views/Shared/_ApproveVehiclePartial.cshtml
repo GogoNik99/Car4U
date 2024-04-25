@@ -1,0 +1,19 @@
+﻿@model VehicleServiceModel
+@inject IVehicleService vehicleService
+@inject IOwnerService ownerService
+<div class="col-md-4">
+    <div class="card mb-3">
+        <img height="200" width="100" class="card-img-top" src="~/img/@Model.ImageFileName" alt="Card image cap">
+        <div class="card-body text-center">
+            <h4>@Model.Name</h4>
+            <h6>Manifacturer: <b>@Model.Manifacturer</b></h6>
+            <h6>Fuel Type: <b>@Model.Fuel</b></h6>
+            <h6>
+                Price Per Day:
+                <b>@String.Format("{0:f2}", Model.Price) BGN</b>
+            </h6>
+            <a asp-area="Admin" asp-controller="Vehicle" asp-action="Details" asp-route-id="@Model.Id"
+               class="btn btn-success">Details</a>
+        </div>
+    </div>
+</div>

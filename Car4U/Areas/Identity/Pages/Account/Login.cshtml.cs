@@ -112,7 +112,7 @@ namespace Car4U.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    var user = await _userManager.FindByEmailAsync("admin@mail.com");
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
 
                     if (await _userManager.IsInRoleAsync(user, AdminRole))
                     {

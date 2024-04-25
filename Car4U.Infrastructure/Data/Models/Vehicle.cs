@@ -69,5 +69,8 @@ namespace Car4U.Infrastructure.Data.Models
 
         public Model Model { get; set; } = null!;
 
+        [ForeignKey(nameof(RenterId))]
+        public ApplicationUser? Renter { get; set; }
+
     }
 }

@@ -214,6 +214,7 @@ namespace Car4U.Core.Services
                     IsActive = v.IsActive,
                     Owner = new Models.Owner.OwnerServiceModel()
                     {
+                        Name = $"{v.Owner.User.FirstName} {v.Owner.User.LastName}",
                         Address = v.Owner.Address,
                         Email = v.Owner.User.Email,
                         PhoneNumber = v.Owner.PhoneNumber
@@ -253,6 +254,7 @@ namespace Car4U.Core.Services
                 vehicle.Manufacturer = model.Manifacturer;
                 vehicle.FuelTypeId = model.FuelTypeId;
                 vehicle.Description = model.Description;
+                vehicle.IsActive = false;
                 if (!await _model.ModelExistsAsync(model.ModelName))
                 {
                     await _model.CreateModelAsync(model.ModelName);
@@ -316,5 +318,36 @@ namespace Car4U.Core.Services
                     ModelName = v.Model.Name
                 })
                 .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<VehicleServiceModel>> GetUnApprovedAsync()
+        {
+            return await _repository.AllReadOnly<Vehicle>()
+            .Where(v => v.IsActive == false)
+            .Select(v => new VehicleServiceModel
+            {
+                Id = v.Id,
+                Name = v.Model.Name,
+                ImageFileName = v.ImageFileName,
+                Manifacturer = v.Manufacturer,
+                Fuel = v.FuelType.Name
+            })
+            .ToListAsync();
+        }
+
+        public async Task ApproveVehicleAsync(int id)
+        {
+            Vehicle? model = await _repository.GetByIdAsync<Vehicle>(id);
+
+            if (model != null)
+            {
+                model.IsActive = true;
+                await _repository.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> IsVehicleApproved(int id)
+            => await _repository.AllReadOnly<Vehicle>()
+                .Where(v => v.Id == id)
+                .AnyAsync(v => v.IsActive == true);
     }
 }

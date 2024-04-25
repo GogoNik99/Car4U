@@ -42,5 +42,9 @@ namespace Car4U.Core.Contracts
         Task DeleteVehicleAsync(int id);
 
         Task<VehicleDeleteDetailsViewModel?> GetDeleteDetailsAsync(int id);
+        Task<IEnumerable<VehicleServiceModel>> GetUnApprovedAsync();
+        Task ApproveVehicleAsync(int id);
+
+        Task<bool> IsVehicleApproved(int id);
     }
 }

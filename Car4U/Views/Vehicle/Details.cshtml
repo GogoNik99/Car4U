@@ -38,7 +38,7 @@
     <div class="form-inline">
         @if (this.User.Identity.IsAuthenticated)
         {
-            if (await vehicleService.HasOwnerWithIdAsync(Model.Id, User.Id()))
+            if (await vehicleService.HasOwnerWithIdAsync(Model.Id, User.Id()) || User.IsAdmin())
             {
                 <a class="btn btn-warning" asp-controller="Vehicle" asp-action="Edit"
                      asp-route-id="@Model.Id">Edit</a>
@@ -46,7 +46,7 @@
                      asp-route-id="@Model.Id">Delete</a>
             }
 
-            @if (!Model.IsRented && (await ownerService.IsOwnerAsync(Model.Id, User.Id())) == false)
+            @if (!Model.IsRented && (await ownerService.IsOwnerAsync(Model.Id, User.Id())) == false && User.IsAdmin() == false)
             {
                 <form class="ml-2" asp-controller="Vehicle"
                    asp-action="Rent" asp-route-id="@Model.Id" method="post">
@@ -68,6 +68,7 @@
 <div class="card" style="width: 18rem;">
     <div class="card-body">
         <h5 class="card-title">Owner Info</h5>
+        <p class="card-text">Owner Name:  @Model.Owner.Name</p>
         <p class="card-text">Owner Email:  @Model.Owner.Email</p>
         <p class="card-text">Owner Phone Number: @Model.Owner.PhoneNumber</p>
         <p class="card-text">Owner Rating: @Model.Rating</p>
