@@ -1,10 +1,13 @@
 ﻿namespace Car4U.Core.Enumerations
 {
-    public enum CarsSorting
+    public enum VehiclesSorting
     {
         HighestPrice = 0,
+
         LowestPrice = 1,
-        OwnerRating = 3,
-        Available = 4
+
+        OwnerRating = 2,
+
+        Available = 3
     }
 }

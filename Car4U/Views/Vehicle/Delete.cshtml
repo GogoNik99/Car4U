@@ -1,0 +1,30 @@
+﻿@model VehicleDeleteDetailsViewModel
+
+@{
+    ViewBag.Title = "Delete Vehicle";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<form asp-action="Delete">
+    <div class="row">
+        <div class="col-md-4">
+            <img class="card-img-top" src="~/img/@Model.ImageName" alt="House Image">
+        </div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label asp-for="ModelName" class="control-label"></label>
+                <input asp-for="ModelName" class="form-control" disabled="disabled" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" rows="4" class="form-control" placeholder="Description..." disabled="disabled"></textarea>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Are you sure ?" class="btn btn-warning" />
+            </div>
+        </div>
+    </div>
+</form>

@@ -13,9 +13,9 @@ namespace Car4U.Core.Services
                 File.Delete($"{ImagePath}/{fileName}");
             }
         }
-        public async Task<string?> UploadAsync(IFormFile img)
+        public async Task<string> UploadAsync(IFormFile img)
         {
-            string? fileName = null;
+            string fileName = "Something went Wrong!";
 
             if (img != null)
             {

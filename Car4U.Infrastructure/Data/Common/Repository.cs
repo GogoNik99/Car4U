@@ -22,8 +22,6 @@ namespace Car4U.Infrastructure.Data.Common
         public IQueryable<T> All<T>() where T : class
             => DbSet<T>();
 
-
-
         public IQueryable<T> AllReadOnly<T>() where T : class
             => DbSet<T>().AsNoTracking();
 

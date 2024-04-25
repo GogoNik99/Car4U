@@ -1,10 +1,24 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
+﻿@using Car4U.Infrastructure.Data.Models;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject IOwnerService ownerService
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
+    @if (await ownerService.OwnerExistsAsync(User.Id()))
+    {
+     <li class="nav-item">
+         <a class="nav-link text-dark" asp-area="" asp-controller="Vehicle" asp-action="Register">Register Vehicle</a>
+     </li>
+    }
+    else
+    {
+     <li class="nav-item">
+         <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Become">Complete Owner Profile</a>
+     </li>
+    }
+    
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>

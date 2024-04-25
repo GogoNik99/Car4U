@@ -1,8 +1,6 @@
-﻿using Car4U.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-
+using System.Security.Claims;
 namespace Car4U.Controllers
 {
     public class HomeController : BaseController
@@ -17,13 +15,33 @@ namespace Car4U.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            if (User.IsAdmin())
+            {
+                return RedirectToAction("Tasks", "Home", new { area = "Admin" });
+            }
             return View();
         }
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int statusCode)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+            if (statusCode == 404)
+            {
+                return View("Error404");
+            }
+
+            if (statusCode == 400)
+            {
+                return View("Error400");
+            }
+            if (statusCode == 500)
+            {
+                return View("Error500");
+            }
+
+            return View();
         }
     }
 }

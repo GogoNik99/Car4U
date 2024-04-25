@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Car4U.Core.Constants
 {
-    internal class MessageConstants
+    public static class MessageConstants
     {
+        public const string RequiredMessage = "The {0} field is required";
+
+        public const string LengthMessage = "The field {0} must be between {2} and {1} characters long";
+
+        public const string RangeMessage = "Price per month must be a positive number and less than {2} leva";
     }
 }

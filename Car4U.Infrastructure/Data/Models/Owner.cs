@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -38,8 +37,10 @@ namespace Car4U.Infrastructure.Data.Models
 
         [ForeignKey(nameof(UserId))]
 
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         public IEnumerable<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+
+        public IEnumerable<Rating> Ratings { get; set; } = new List<Rating>();
     }
 }
