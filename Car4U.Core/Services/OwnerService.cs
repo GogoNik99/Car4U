@@ -1,4 +1,5 @@
 ﻿using Car4U.Core.Contracts;
+using Car4U.Core.Models.Owner;
 using Car4U.Infrastructure.Data.Common;
 using Car4U.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,20 @@ namespace Car4U.Core.Services
             await _repository.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<OwnerRatingsViewModel>> GetAllOwnersRatingsAsync()
+        {
+            return await _repository.AllReadOnly<Owner>()
+                .Select(o => new OwnerRatingsViewModel
+                {
+                    FullName = $"{o.User.FirstName} {o.User.LastName}",
+                    Id = o.Id,
+                    PhoneNumber = o.PhoneNumber,
+                    Rating = o.Rating,
+                    RatingsCount = o.Ratings.Count()
+                })
+                .ToListAsync();
+        }
+
         public async Task<int> GetOwnerIdAsync(string userId)
         {
             var owner = await _repository.AllReadOnly<Owner>()
@@ -49,6 +64,9 @@ namespace Car4U.Core.Services
 
         public async Task<bool> OwnerExistsAsync(string userId)
             => await _repository.AllReadOnly<Owner>().AnyAsync(o => o.UserId == userId);
+
+        public async Task<bool> OwnerExistsByIdAsync(int id)
+            => await _repository.AllReadOnly<Owner>().AnyAsync(o => o.Id == id);
 
         public async Task<bool> OwnerWithAddressExistsAsync(string Address)
             => await _repository.AllReadOnly<Owner>().AnyAsync(o => o.Address == Address);

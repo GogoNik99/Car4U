@@ -1,5 +1,6 @@
 ﻿using Car4U.Core.Enumerations;
 using Car4U.Core.Models.Vehicle;
+using Car4U.Infrastructure.Data.Models;
 
 namespace Car4U.Core.Contracts
 {
@@ -46,5 +47,9 @@ namespace Car4U.Core.Contracts
         Task ApproveVehicleAsync(int id);
 
         Task<bool> IsVehicleApproved(int id);
+
+        Task<Vehicle> GetVehicleByIdAsync(int id);
+
+        Task<Vehicle?> GetRentedVehicleByUserId(string userId);
     }
 }

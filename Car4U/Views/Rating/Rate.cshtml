@@ -1,0 +1,13 @@
+﻿@model RatingFormViewModel
+@{
+    ViewData["Title"] = "Rate Owner";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<partial name="_RatingFormPartial" model="@Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

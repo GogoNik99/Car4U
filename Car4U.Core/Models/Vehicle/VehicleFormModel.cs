@@ -32,7 +32,7 @@ namespace Car4U.Core.Models.Vehicle
             VehicleMinPrice,
             VehicleMaxPrice,
             ConvertValueInInvariantCulture = true,
-            ErrorMessage = RangeMessage)]
+            ErrorMessage = PriceRangeMessage)]
         public decimal Price { get; set; }
 
         public IFormFile? Image { get; set; }
