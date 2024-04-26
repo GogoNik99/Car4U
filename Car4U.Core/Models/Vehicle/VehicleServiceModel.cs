@@ -37,7 +37,7 @@ namespace Car4U.Core.Models.Vehicle
             VehicleMinPrice,
             VehicleMaxPrice,
             ConvertValueInInvariantCulture = true,
-            ErrorMessage = RangeMessage)]
+            ErrorMessage = PriceRangeMessage)]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = RequiredMessage)]
@@ -49,7 +49,7 @@ namespace Car4U.Core.Models.Vehicle
             OwnerMinRating,
             OwnerMaxRating,
             ConvertValueInInvariantCulture = true,
-            ErrorMessage = RangeMessage)]
+            ErrorMessage = PriceRangeMessage)]
         public decimal Rating { get; set; }
 
         public bool IsRented { get; set; }

@@ -34,6 +34,11 @@
                 <form asp-area="" asp-controller="Vehicle" asp-action="Return" asp-route-id="@Model.Id" method="post">
                     <input class="btn btn-primary" type="submit" value="Return" />
                 </form>
+                <p></p>
+                <a asp-area="" asp-controller="Rating" asp-action="Rate" asp-route-id="@Model.Id"
+                   class="btn btn-warning">Rate&Return</a>
+                
+                
             }
             
         </div>

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<OwnerRatingsViewModel>
+
+@{
+    ViewBag.Title = "All Ratings";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th><label>Owner Name</label></th>
+            <th><label>Owner Phone Number</label></th>
+            <th><label>Owner Rating</label></th>
+            <th><label>Total Ratings Amount</label></th>
+            <th><label>Check Ratings</label></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var owner in Model)
+        {
+            <tr>
+                <td>
+                    <label>@owner.FullName</label>
+                </td>
+                <td>
+                    <label>@owner.PhoneNumber</label>
+                </td>
+                <td>
+                    <label>@owner.Rating</label>
+                </td>
+                <td>
+                    <label>@owner.RatingsCount</label>
+                </td>
+                <td>
+                    @if (owner.RatingsCount != 0)
+                    {
+                        <a asp-area="" asp-controller="Rating" asp-action="Info" asp-route-id="@owner.Id"
+                           class="btn btn-warning">Check</a>
+                    }
+                    
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+</table>

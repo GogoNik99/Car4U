@@ -349,5 +349,18 @@ namespace Car4U.Core.Services
             => await _repository.AllReadOnly<Vehicle>()
                 .Where(v => v.Id == id)
                 .AnyAsync(v => v.IsActive == true);
+
+        public async Task<Vehicle> GetVehicleByIdAsync(int id)
+        {
+            return await _repository.AllReadOnly<Vehicle>()
+                .FirstAsync(v => v.Id == id);
+        }
+
+        public async Task<Vehicle?> GetRentedVehicleByUserId(string userId)
+        {
+            return await _repository.AllReadOnly<Vehicle>()
+                .Where(v => v.RenterId == userId)
+                .FirstOrDefaultAsync();
+        }
     }
 }

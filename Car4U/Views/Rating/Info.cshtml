@@ -1,0 +1,11 @@
+﻿@model IEnumerable<RatingDetailsServiceModel>
+@{
+    ViewBag.Title = "Raings";
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <partial name="_RatingDetailsPartial" model="@item" />
+    }
+</div>
