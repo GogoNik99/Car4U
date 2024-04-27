@@ -7,19 +7,32 @@ namespace Car4U.Data.Infrastructure
 {
     public class Car4UDbContext : IdentityDbContext<ApplicationUser>
     {
-        public Car4UDbContext(DbContextOptions<Car4UDbContext> options)
-            : base(options)
+        private bool _seedDb;
+        public Car4UDbContext(DbContextOptions<Car4UDbContext>
+            options, bool seedDb = true) : base(options)
         {
+            if (Database.IsRelational())
+            {
+                Database.Migrate();
+            }
+            else
+            {
+                Database.EnsureCreated();
+            }
+            _seedDb = seedDb;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new UserConfiguration());
-            builder.ApplyConfiguration(new OwnerConfiguration());
-            builder.ApplyConfiguration(new FuelTypeConfiguration());
-            builder.ApplyConfiguration(new ModelConfiguration());
-            builder.ApplyConfiguration(new VehicleConfiguration());
-            builder.ApplyConfiguration(new RatingConfiguration());
+            if (_seedDb)
+            {
+                builder.ApplyConfiguration(new UserConfiguration());
+                builder.ApplyConfiguration(new OwnerConfiguration());
+                builder.ApplyConfiguration(new FuelTypeConfiguration());
+                builder.ApplyConfiguration(new ModelConfiguration());
+                builder.ApplyConfiguration(new VehicleConfiguration());
+                builder.ApplyConfiguration(new RatingConfiguration());
+            }
 
             base.OnModelCreating(builder);
         }

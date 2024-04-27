@@ -1,4 +1,5 @@
-﻿using Car4U.Core.Models.Rating;
+﻿using Car4U.Core.Models.Owner;
+using Car4U.Core.Models.Rating;
 
 namespace Car4U.Core.Contracts
 {
@@ -6,8 +7,9 @@ namespace Car4U.Core.Contracts
     {
         Task CreateRatingAsync(RatingFormViewModel model, int ownerId);
         Task<IEnumerable<RatingDetailsServiceModel>> GetRatingDetailsByOwnerIdAsync(int id);
-
         Task<decimal> SetOwnerRatingAsync(int id, decimal ratingValue);
+
+        Task<IEnumerable<OwnerRatingsViewModel>> GetAllOwnersRatingsAsync();
 
     }
 }

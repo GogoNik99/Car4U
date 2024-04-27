@@ -22,14 +22,14 @@
                    class="btn btn-danger">Delete</a>
             }
             <p></p>
-            @if (!Model.IsRented && await ownerService.IsOwnerAsync(Model.Id, User.Id()) == false && User.IsAdmin() == false)
+            @if (!Model.IsRented && await ownerService.IsOwnerAsync(Model.Id, User.Id()) == false && User.IsAdmin() == false && this.User.Identity.IsAuthenticated)
             {
                 <form class="input-group-sm" asp-area="" asp-controller="Vehicle" asp-action="Rent"
                   asp-route-id="@Model.Id" method="post">
                     <input class="btn btn-primary" type="submit" value="Rent" />
                 </form>
             }
-            else if (Model.IsRented && await vehicleService.IsRentedByIUserWithIdAsync(Model.Id, User.Id()))
+            else if (Model.IsRented && await vehicleService.IsRentedByIUserWithIdAsync(Model.Id, User.Id()) && this.User.Identity.IsAuthenticated)
             {
                 <form asp-area="" asp-controller="Vehicle" asp-action="Return" asp-route-id="@Model.Id" method="post">
                     <input class="btn btn-primary" type="submit" value="Return" />

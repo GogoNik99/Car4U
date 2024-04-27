@@ -25,7 +25,7 @@ namespace Car4U.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var model = await _ownerService.GetAllOwnersRatingsAsync();
+            var model = await _ratingService.GetAllOwnersRatingsAsync();
 
             return View(model);
         }
@@ -51,14 +51,13 @@ namespace Car4U.Controllers
 
         public async Task<IActionResult> Rate(int id)
         {
-            if (await _vehicleService.IsRentedByIUserWithIdAsync(id, User.Id()) == false)
-            {
-                return Unauthorized();
-            }
-
             if (await _vehicleService.ExistsAsync(id) == false)
             {
                 return NotFound();
+            }
+            if (await _vehicleService.IsRentedByIUserWithIdAsync(id, User.Id()) == false)
+            {
+                return Unauthorized();
             }
 
             RatingFormViewModel model = new RatingFormViewModel();
@@ -73,7 +72,7 @@ namespace Car4U.Controllers
 
             var vehicle = await _vehicleService.GetRentedVehicleByUserId(User.Id());
 
-            if (await _vehicleService.ExistsAsync(vehicle.Id) == false)
+            if (vehicle == null)
             {
                 return NotFound();
             }
