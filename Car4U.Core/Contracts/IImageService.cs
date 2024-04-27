@@ -6,7 +6,7 @@ namespace Car4U.Core.Contracts
     {
         Task<string> UploadAsync(IFormFile img);
 
-        void DeleteImg(string fileName);
+        void DeleteImg(string fileName, string imgPath = null);
 
     }
 }

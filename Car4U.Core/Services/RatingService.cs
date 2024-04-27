@@ -1,4 +1,5 @@
 ﻿using Car4U.Core.Contracts;
+using Car4U.Core.Models.Owner;
 using Car4U.Core.Models.Rating;
 using Car4U.Infrastructure.Data.Common;
 using Car4U.Infrastructure.Data.Models;
@@ -9,11 +10,9 @@ namespace Car4U.Core.Services
     public class RatingService : IRatingService
     {
         private readonly IRepository _repository;
-        private readonly IOwnerService _ownerService;
-        public RatingService(IRepository repository, IOwnerService ownerService)
+        public RatingService(IRepository repository)
         {
             _repository = repository;
-            _ownerService = ownerService;
         }
 
         public async Task CreateRatingAsync(RatingFormViewModel model, int ownerId)
@@ -66,6 +65,20 @@ namespace Car4U.Core.Services
             }
 
             return rating;
+        }
+
+        public async Task<IEnumerable<OwnerRatingsViewModel>> GetAllOwnersRatingsAsync()
+        {
+            return await _repository.AllReadOnly<Owner>()
+                .Select(o => new OwnerRatingsViewModel
+                {
+                    FullName = $"{o.User.FirstName} {o.User.LastName}",
+                    Id = o.Id,
+                    PhoneNumber = o.PhoneNumber,
+                    Rating = o.Rating,
+                    RatingsCount = o.Ratings.Count()
+                })
+                .ToListAsync();
         }
     }
 }

@@ -6,11 +6,18 @@ namespace Car4U.Core.Services
 {
     public class ImageService : IImageService
     {
-        public void DeleteImg(string fileName)
+        public void DeleteImg(string fileName, string imgPath = null)
         {
             if (fileName != null)
             {
-                File.Delete($"{ImagePath}/{fileName}");
+                if (string.IsNullOrEmpty(imgPath))
+                {
+                    File.Delete($"{ImagePath}/{fileName}");
+                }
+                else
+                {
+                    File.Delete($"{imgPath}/{fileName}");
+                }
             }
         }
         public async Task<string> UploadAsync(IFormFile img)
